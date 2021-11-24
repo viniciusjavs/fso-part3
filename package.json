@@ -4,7 +4,9 @@
   "description": "Phonebook API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/viniciusjavs/fso-part3/issues"
   },
-  "homepage": "https://github.com/viniciusjavs/fso-part3#readme"
+  "homepage": "https://github.com/viniciusjavs/fso-part3#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
