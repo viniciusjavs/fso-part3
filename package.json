@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Phonebook API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viniciusjavs/fso-part3.git"
+  },
+  "author": "Vinicius Sa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/viniciusjavs/fso-part3/issues"
+  },
+  "homepage": "https://github.com/viniciusjavs/fso-part3#readme"
+}
