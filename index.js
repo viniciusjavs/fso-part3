@@ -1,7 +1,7 @@
-const express = require('express')
+import express, { json } from 'express'
 const app = express()
 
-app.use(express.json())
+app.use(json())
 
 let persons = [
     {
