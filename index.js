@@ -50,8 +50,18 @@ const generateId = () => {
     return Math.floor(Math.random() * maxRange)
 }
 
-app.post('/api/persons', (request, response) => {
-    const person = {id: generateId(), ...request.body}
+app.post('/api/persons', ({ body }, response) => {
+    const badRequest = error => response.status(400).json({'error': error})
+    const {name, number} = body
+
+    if (!name)
+        return badRequest('Name is missing')
+    if (!number)
+        return badRequest('Number is missing')
+    if (persons.some(p => p.name === name))
+        return badRequest('Name must be unique')
+
+    const person = {id: generateId(), ...body}
     persons = persons.concat(person)
     response.json(person)
 })
