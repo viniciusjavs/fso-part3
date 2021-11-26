@@ -4,7 +4,12 @@ import morgan from 'morgan'
 const app = express()
 
 app.use(json())
-app.use(morgan('tiny'))
+
+morgan.token('body', ({ body }, _res) => JSON.stringify(body))
+
+const tiny = `:method :url :status :res[content-length] - :response-time ms`
+
+app.use(morgan(`${tiny} :body`))
 
 let persons = [
     {
