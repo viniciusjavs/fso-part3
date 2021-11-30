@@ -37,6 +37,8 @@ let persons = [
     }
 ]
 
+app.use(express.static('build'))
+
 app.get('/api/persons', (_request, response) => response.json(persons))
 
 app.get('/info', (_request, response) => response.send(`
