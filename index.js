@@ -43,11 +43,6 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
 })
 
-const generateId = () => {
-    const maxRange = 96
-    return Math.floor(Math.random() * maxRange)
-}
-
 app.post('/api/persons', ({ body }, response) => {
     const badRequest = error => response.status(400).json({'error': error})
     const {name, number} = body
@@ -56,12 +51,11 @@ app.post('/api/persons', ({ body }, response) => {
         return badRequest('Name is missing')
     if (!number)
         return badRequest('Number is missing')
-    if (persons.some(p => p.name === name))
-        return badRequest('Name must be unique')
 
-    const person = {id: generateId(), ...body}
-    persons = persons.concat(person)
-    response.json(person)
+    const person = new Person({...body})
+    person
+        .save()
+        .then(savedPerson => response.json(person))
 })
 
 const unknownEndpoint = (_req, res) => res.status(404).send({ error: 'unknown endpoint' })
