@@ -16,13 +16,16 @@ mongoose
 const personSchema = new mongoose.Schema({
     name: {
         type: String,
+        minlength: 3,
         required: true,
         unique: true
     },
     number: {
         type: String,
+        minlength: 9,
+        maxlength: 11,
         required: true,
-        match: /^[0-9]{3}-[0-9]{7}$/
+        match: /^[0-9]{3}-[0-9]{5,7}$/
     }
 })
 personSchema.plugin(uniqueValidator)

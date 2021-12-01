@@ -57,7 +57,7 @@ app.put('/api/persons/:id', ({ body: {name, number}, params: {id} }, response, n
     const person = {name, number}
     console.log('put ', person, id)
     Person
-        .findByIdAndUpdate(id, person, { new: true })
+        .findByIdAndUpdate(id, person, { new: true, runValidators: true })
         .then(updatedPerson => updatedPerson ? response.json(updatedPerson) : next(new Error('id not found')))
         .catch(error => next(error))
 })
