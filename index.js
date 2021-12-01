@@ -46,17 +46,11 @@ app.delete('/api/persons/:id', (request, response, next) => {
 })
 
 app.post('/api/persons', ({ body }, response, next) => {
-    const {name, number} = body
-
-    if (!name)
-        return next(new Error('missing property', {cause: 'name'}))
-    if (!number)
-        return next(new Error('missing property', {cause: 'number'}))
-
     const person = new Person({...body})
     person
         .save()
         .then(savedPerson => response.json(person))
+        .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', ({ body: {name, number}, params: {id} }, response, next) => {
@@ -72,10 +66,11 @@ const unknownEndpoint = (_req, res) => res.status(404).send({ error: 'unknown en
 app.use(unknownEndpoint)
 
 const errorHandler = (error, _req, res, next) => {
+    console.log(error)
     if (error.name === 'CastError') {
         return res.status(400).send({ error: 'malformatted id' })
-    } else if (error.message === 'missing property') {
-        return res.status(400).send({ error: `${error.cause} is missing` })
+    } else if (error.name === 'ValidationError') {
+        return res.status(400).send({ error: error.message })
     } else if (error.message === 'id not found') {
         return res.status(404).send({ error: error.message })
     }

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -13,9 +14,18 @@ mongoose
     .catch(({ message }) => console.log('error connecting to MongoDB: ', message))
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    number: {
+        type: String,
+        required: true,
+        match: /^[0-9]{3}-[0-9]{7}$/
+    }
 })
+personSchema.plugin(uniqueValidator)
 
 personSchema.set('toJSON', {
     transform: (_document, returnedObject) => {
