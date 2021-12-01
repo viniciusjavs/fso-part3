@@ -31,27 +31,27 @@ app.get('/info', (_request, response) => {
         })
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
     Person
         .findById(request.params.id)
-        .then(person => response.json(person))
-        .catch(_error => response.status(404).end())
+        .then(person => person ? response.json(person) : next(new Error('id not found')))
+        .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
     Person
         .findByIdAndRemove(request.params.id)
-        .then(_result => response.status(204).end())
+        .then(result => result ? response.status(204).end() : next(new Error('id not found')))
+        .catch(error => next(error))
 })
 
-app.post('/api/persons', ({ body }, response) => {
-    const badRequest = error => response.status(400).json({'error': error})
+app.post('/api/persons', ({ body }, response, next) => {
     const {name, number} = body
 
     if (!name)
-        return badRequest('Name is missing')
+        return next(new Error('missing property', {cause: 'name'}))
     if (!number)
-        return badRequest('Number is missing')
+        return next(new Error('missing property', {cause: 'number'}))
 
     const person = new Person({...body})
     person
@@ -60,8 +60,19 @@ app.post('/api/persons', ({ body }, response) => {
 })
 
 const unknownEndpoint = (_req, res) => res.status(404).send({ error: 'unknown endpoint' })
-
 app.use(unknownEndpoint)
+
+const errorHandler = (error, _req, res, next) => {
+    if (error.name === 'CastError') {
+        return res.status(400).send({ error: 'malformatted id' })
+    } else if (error.message === 'missing property') {
+        return res.status(400).send({ error: `${error.cause} is missing` })
+    } else if (error.message === 'id not found') {
+        return res.status(404).send({ error: error.message })
+    }
+    next(error)
+}
+app.use(errorHandler)
 
 dotenv.config()
 const PORT = process.env.PORT
