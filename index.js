@@ -1,13 +1,14 @@
-import express, { json } from 'express'
-import morgan from 'morgan'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import Person from './models/person.js'
+const express = require('express')
+const morgan = require('morgan')
+const cors = require('cors')
+const Person = require('./models/person')
+
+require('dotenv').config
 
 const app = express()
 
 app.use(cors())
-app.use(json())
+app.use(express.json())
 
 morgan.token('body', ({ body }) => JSON.stringify(body))
 const tiny = ':method :url :status :res[content-length] - :response-time ms'
@@ -78,7 +79,6 @@ const errorHandler = (error, _req, res, next) => {
 }
 app.use(errorHandler)
 
-dotenv.config()
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

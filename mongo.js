@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
 if (process.argv.length < 3 || process.argv.length > 5) {
   console.log('Program usage:')

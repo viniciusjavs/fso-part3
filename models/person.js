@@ -1,8 +1,6 @@
-import mongoose from 'mongoose'
-import uniqueValidator from 'mongoose-unique-validator'
-import dotenv from 'dotenv'
-
-dotenv.config()
+const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
+require('dotenv').config()
 
 let url = process.env.MONGODB_URI
 console.log('connecting to', url)
@@ -38,6 +36,4 @@ personSchema.set('toJSON', {
   }
 })
 
-const Person = mongoose.model('Person', personSchema)
-
-export default Person
+module.exports = mongoose.model('Person', personSchema)
