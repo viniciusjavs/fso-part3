@@ -1,15 +1,5 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
-require('dotenv').config()
-
-let url = process.env.MONGODB_URI
-console.log('connecting to', url)
-url = url.replace('MONGODB_PASS', process.env.MONGODB_PASS)
-
-mongoose
-  .connect(url)
-  .then(() => console.log('connected to MongoDB'))
-  .catch(({ message }) => console.log('error connecting to MongoDB: ', message))
 
 const personSchema = new mongoose.Schema({
   name: {
